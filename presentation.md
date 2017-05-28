@@ -13,6 +13,7 @@ class: impact
 
 # {{title}}
 ## The good parts
+### Lars Jacob (@jaclar)
 
 ---
 
@@ -48,18 +49,24 @@ class: impact
 
 .col-4[
 ### Timeline
+
+![Timeline sample](./img/timeline-sample.png)
 ]
 
 --
 
 .col-4[
 ### Flamegraph
+
+![Flamegraph sample](./img/flamegraph-sample.png)
 ]
 
 --
 
 .col-4[
 ### Sunburst
+
+![Sunburst sample](./img/sunburst-sample.png)
 ]
 
 
@@ -67,13 +74,28 @@ class: impact
 
 # Profiling en el lado del cliente (Chrome)
 
-Placeholder: chrome profiling tab imagen
+.col-4[
+
+- Chrome Dev Tools recien introdujo el performance tab
+- Combina CPU profiling y otros timings importantes
+- Network
+- Interactions
+- Rendering
+- etc.
+
+]
+
+.col-8[![Performance tab](./img/performance-tab.png)]
 
 ---
 
-## CPU profiling
+## CPU profiling (JavaScript)
 
-Placeholder para un gif que
+- Viejo CPU Profiler todavia existe
+- 'tres puntos' -> More Tools -> JavaScript Profiler
+- puede cargar `*.cpuprofile` .small[(los generamos mas tarde)]
+
+![JavaScript Profile tab](./img/javascript-profile.png)
 
 ---
 
@@ -83,20 +105,19 @@ Placeholder para un gif que
 - Espeicialmente closures pueden retener muchos objetos del garbage
   collector
 
-Heap screenshot placeholder
+![Memory tab](./img/heap-screenshot.png)
 
 ---
 
 # Profiling en el lado del servidor (node.js)
 
-- como node.js usa V8 como engine de JavaScript podemos usar los
+- Como node.js usa V8 como engine de JavaScript podemos usar los
   mismos heramientas de Chrome DevTools
-- desde v6 node implementa *Chrome Debugging Protocol* con
+- Desde v6 node implementa *Chrome Debugging Protocol* con
   `--inspect`
 
 ``` bash
-┌─[niue] - [~/projects/talks/sp-tt-2017] - [Tue, 23. May, 23:08]
-└─[$] node --inspect
+$ node --inspect
 Debugger listening on port 9229.
 Warning: This is an experimental feature and could change at any time.
 To start debugging, open the following URL in Chrome:
@@ -109,24 +130,24 @@ To start debugging, open the following URL in Chrome:
 
 ---
 
-## dtrace, perf and friends - **OS tools to the rescue!**
+## dtrace, perf y amigos - **OS tools to the rescue!**
 
-- hace mucho tiempo los sistemas operativos incluyen heramientas para
+- Hace mucho tiempo los sistemas operativos incluyen heramientas para
   inspeccionar processos (`strace`, `dtrace`, etc)
 - `node --perf-basic-prof` expone simbolos de V8
 
 .col-6[
 `dtrace`
 
-- originalmente de *Solaris* (ahora tb. *macOS*, *freeBSD* y *Linux*
-- tiene super-poderes y casi no tiene overhead
+- Originalmente de *Solaris* (ahora tb. *macOS*, *freeBSD* y *Linux*
+- Tiene super-poderes y casi no tiene overhead
 ]
 
 .col-6[
 `perf`
 
-- incluido en el kernel de *Linux*
-- y funciona... quien ya tiene la suerte de trabajar con BSD o
+- Incluido en el kernel de *Linux*
+- Y funciona... quien ya tiene la suerte de trabajar con BSD o
   openSolaris en produccion?
 
 ]
@@ -139,26 +160,58 @@ Que se usa en Windows? .small[(Quien ya tiene la mala suerte de tener que trabja
 
 ## Ejemplo: `perf`
 
-onliner:
+Oneliner:
 ``` bash
 perf record -e cycles:u -g -- node --perf-basic-prof index.js
 ```
 
-inspeccionar processo que ya esta corriendo
+--
 
+Inspeccionar processo que ya esta corriendo:
 ``` bash
-perf...
+$ node --perf-basic-prof index.js &
+[1] 11465
+$ perf record -e cycles:u -g -p 11465
 ```
 
-TODO: walk through -> `cpuprofilify` -> `devtools` || `flamegraph`
+---
+
+## Generar CPUProfile y Flamegraph
+
+``` bash
+$ ls
+index.js isolate-0x3723e90-v8.log perf.data
+$ perf script > perf.script
+$ ls
+index.js isolate-0x3723e90-v8.log perf.data perf.script
+$ npm install -g cpuprofilify flamegraph
+$ cat perf.script | node cpuprofilify > perf.cpuprofile
+# cleanup file from "
+$ sed -i.orig -e s#\\\\\"#\\\'#g *.cpuprofile
+$ cat perf.cpuprofile | flamegraph -t cpuprofile > perf.svg
+```
 
 ---
 
 ## Real life flame graph de I am at
 
+- Durante load test nos dio cuenta que los node application servers
+  conumieron mucho mas CPU de lo esperado durante votaciones
+- En pruebas locales no pudimos reproducir el problema (obvio... )
+- Entonces generamos flamegraphs del lado local y del lado del servidor
+  y nos pusimos a ver donde estan los diferencias
+
+---
+
 ### Local
 
+.col-8[![Local Flamegraph](./img/flamegraph-local.png)]
+
+---
+
 ### Produccion
+
+.col-8[![Production Flamegraph](./img/flamegraph-sample.png)]
 
 ---
 
@@ -169,4 +222,5 @@ TODO: walk through -> `cpuprofilify` -> `devtools` || `flamegraph`
   http://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html
 - Linux tracers: http://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
 - `cpuprofilify`: https://github.com/thlorenz/cpuprofilify
-- Chrome Debuggin Protocol: https://chromedevtools.github.io/devtools-protocol/
+- `flamegraph`: https://github.com/thlorenz/flamegraph
+- Chrome Debugging Protocol: https://chromedevtools.github.io/devtools-protocol/
