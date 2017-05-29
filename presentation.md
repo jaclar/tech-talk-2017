@@ -22,9 +22,8 @@ class: impact
 ## ¡Mala performance es un bug!
 
 - En el *backend* pone en **peligro** la **estabilidad** de la plataforma
-- En el *frontend* causa una **mala experiencia** para el usario
-- A veces es dificil solamente viendo el codigo, donde hay cuellos de botella en el codigo
-
+- En el *frontend* causa una **mala experiencia** para el usuario
+- A veces es difícil solamente viendo el código, donde hay cuellos de botella en el código
 ---
 
 # ¿Como funciona?
@@ -32,10 +31,10 @@ class: impact
 .col-6[
 
 - Cada lenguaje de programación mantiene un call stack.
-- Un profiler inspeciona el programa mientras que corre con mucha
-  frequencia y guarda el stackframe de esos momentos.
+- Un profiler inspecciona el programa mientras que corre con mucha
+  frecuencia y guarda el stackframe de esos momentos.
 - Con esa información se puede recuperar cuando tiempo se gastó en
-  cada parte del codigo.
+  cada parte del código.
 
 ]
 
@@ -43,7 +42,7 @@ class: impact
 
 ---
 
-# Tipos de Visuzalizaciones
+# Tipos de Visualizaciones
 
 --
 
@@ -76,7 +75,7 @@ class: impact
 
 .col-4[
 
-- Chrome Dev Tools recien introdujo el performance tab
+- Chrome Dev Tools recién introdujo el performance tab
 - Combina CPU profiling y otros timings importantes
 - Network
 - Interactions
@@ -91,7 +90,7 @@ class: impact
 
 ## CPU profiling (JavaScript)
 
-- Viejo CPU Profiler todavia existe
+- Viejo CPU Profiler todavía existe
 - 'tres puntos' -> More Tools -> JavaScript Profiler
 - puede cargar `*.cpuprofile` .small[(los generamos mas tarde)]
 
@@ -102,7 +101,7 @@ class: impact
 ## Heap snapshots
 
 - En general se usa para detectar memory leaks.
-- Espeicialmente closures pueden retener muchos objetos del garbage
+- Especialmente closures pueden retener muchos objetos del garbage
   collector
 
 ![Memory tab](./img/heap-screenshot.png)
@@ -112,7 +111,7 @@ class: impact
 # Profiling en el lado del servidor (node.js)
 
 - Como node.js usa V8 como engine de JavaScript podemos usar los
-  mismos heramientas de Chrome DevTools
+  mismos herramientas de Chrome DevTools
 - Desde v6 node implementa *Chrome Debugging Protocol* con
   `--inspect`
 
@@ -126,14 +125,14 @@ To start debugging, open the following URL in Chrome:
 
 ```
 
-- pero que hacemos si tenemos codigo en produccion o node v4?
+- pero que hacemos si tenemos código en producción o node v4?
 
 ---
 
 ## dtrace, perf y amigos - **OS tools to the rescue!**
 
-- Hace mucho tiempo los sistemas operativos incluyen heramientas para
-  inspeccionar processos (`strace`, `dtrace`, etc)
+- Hace mucho tiempo los sistemas operativos incluyen herramientas para
+  inspeccionar procesos (`strace`, `dtrace`, etc)
 - `node --perf-basic-prof` expone simbolos de V8
 
 .col-6[
@@ -148,13 +147,13 @@ To start debugging, open the following URL in Chrome:
 
 - Incluido en el kernel de *Linux*
 - Y funciona... quien ya tiene la suerte de trabajar con BSD o
-  openSolaris en produccion?
+  openSolaris en producción?
 
 ]
 
 --
 
-Que se usa en Windows? .small[(Quien ya tiene la mala suerte de tener que trabjar con Windows en produccion?)]
+Que se usa en Windows? .small[(Quien ya tiene la mala suerte de tener que trabajar con Windows en producción?)]
 
 ---
 
@@ -167,7 +166,7 @@ perf record -e cycles:u -g -- node --perf-basic-prof index.js
 
 --
 
-Inspeccionar processo que ya esta corriendo:
+Inspeccionar proceso que ya esta corriendo:
 ``` bash
 $ node --perf-basic-prof index.js &
 [1] 11465
@@ -176,7 +175,7 @@ $ perf record -e cycles:u -g -p 11465
 
 ---
 
-## Generar CPUProfile y Flamegraph
+## Generar CPU Profile y Flamegraph
 
 ``` bash
 $ ls
@@ -193,13 +192,13 @@ $ cat perf.cpuprofile | flamegraph -t cpuprofile > perf.svg
 
 ---
 
-## Real life flame graph de I am at
+## Real life flamegraph de I am at
 
 - Durante load test nos dio cuenta que los node application servers
-  conumieron mucho mas CPU de lo esperado durante votaciones
+  consumieron mucho mas CPU de lo esperado durante votaciones
 - En pruebas locales no pudimos reproducir el problema (obvio... )
 - Entonces generamos flamegraphs del lado local y del lado del servidor
-  y nos pusimos a ver donde estan los diferencias
+  y nos pusimos a ver donde están los diferencias
 
 ---
 
