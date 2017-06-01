@@ -90,7 +90,7 @@ blockquote {
 }
 
 .full {
-  &, h1, h2 { color: $text-light; }
+  &, h1, h2, h3 { color: #FFF; }
   &iframe {
     height: calc(#{100%/$iframe-scale} - 1.2em);
     width: 100%/$iframe-scale;
@@ -144,6 +144,7 @@ blockquote {
 .responsive > img { width: 100%; height: auto; };
 .contain { background-size: contain; };
 .overlay { box-shadow: inset 0 0 0 9999px $overlay; }
+.center-small > img { width: 50%; }
 
 // Text
 .left { text-align: left; }

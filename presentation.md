@@ -16,6 +16,66 @@ class: impact
 ### Lars Jacob (@jaclar)
 
 ---
+class: full
+background-image: url('./img/iamat.png')
+
+--
+class: overlay
+
+.col-6[
+## ¿Quienes somos?
+
+- Plataforma de "Augmented Experience" / Segunda Pantalla
+- Framework de desarrollo de apps moviles rapido
+- Interacción con el usuario en .small[(hipster)] tiempo real
+- Comprado por Globant en Octubre 2015
+]
+
+--
+
+.col-6[
+## Tech Stack
+
+- node.js
+- MongoDB
+- Redis
+- Google Cloud Platform
+- React/Redux
+- Android y iOS nativo
+]
+
+---
+class: overlay
+background-image: url('./img/messi.jpg')
+
+.col-6[
+## Casos de exito
+
+- **Messi App Oficial!!!**
+- eltrece
+- Mi telefe
+- Gran Hermano
+- Futbol para todos
+- C5N
+- TVN
+- muchos, muchos más...
+
+]
+
+--
+
+.col-6[
+## Stats
+
+- *1.2M* usuarios únicos por mes
+- Messi *200k* en 2 día
+- *5M* Apps bajadas
+- *24.561.292 votos* recibidos
+- Evento típico *200k RPM*
+
+]
+
+---
 
 # ¿Para que sirve?
 
@@ -23,7 +83,9 @@ class: impact
 
 - En el *backend* pone en **peligro** la **estabilidad** de la plataforma
 - En el *frontend* causa una **mala experiencia** para el usuario
-- A veces es difícil solamente viendo el código, donde hay cuellos de botella en el código
+- A veces es difícil solamente viendo el código, saber donde hay cuellos
+  de botella de performance
+
 ---
 
 # ¿Como funciona?
@@ -68,6 +130,10 @@ class: impact
 ![Sunburst sample](./img/sunburst-sample.png)
 ]
 
+---
+class: full
+
+<iframe src="./img/flamegraph.svg" frameborder="0" scrolling="0" width="100%" height="800px"></iframe>
 
 ---
 
@@ -191,26 +257,59 @@ $ cat perf.cpuprofile | flamegraph -t cpuprofile > perf.svg
 ```
 
 ---
+class: center
 
 ## Real life flamegraph de I am at
 
-- Durante load test nos dio cuenta que los node application servers
-  consumieron mucho mas CPU de lo esperado durante votaciones
-- En pruebas locales no pudimos reproducir el problema (obvio... )
-- Entonces generamos flamegraphs del lado local y del lado del servidor
-  y nos pusimos a ver donde están los diferencias
+
+Durante un load test de rutina...
+
+--
+
+.center-small[![load test](./img/stress-testing.gif)]
+
+---
+class: center
+
+  ... detectamos que los application servers consumieron
+mucho mas CPU de lo esperado durante votaciones.
+
+
+En pruebas locales no pudimos reproducir el problema *(obvio... )*
+
+--
+
+.center-small[![No Problem](./img/flame-dog.jpg)]
+
+--
+
+Entonces generamos flamegraphs del lado local y del lado del servidor
+y nos pusimos a ver donde están los diferencias
+
+
 
 ---
 
-### Local
+class: full, middle, center
+background-image: url('./img/flamegraph-local.png')
 
-.col-8[![Local Flamegraph](./img/flamegraph-local.png)]
+--
+
+class: overlay
+
+# Local
+.center-small[![No Problem](./img/flame-dog.jpg)]
 
 ---
 
-### Produccion
+class: full, middle, center
+background-image: url('./img/flamegraph-sample.png')
 
-.col-8[![Production Flamegraph](./img/flamegraph-sample.png)]
+--
+
+class: overlay
+
+# Producción
 
 ---
 
@@ -223,3 +322,9 @@ $ cat perf.cpuprofile | flamegraph -t cpuprofile > perf.svg
 - `cpuprofilify`: https://github.com/thlorenz/cpuprofilify
 - `flamegraph`: https://github.com/thlorenz/flamegraph
 - Chrome Debugging Protocol: https://chromedevtools.github.io/devtools-protocol/
+
+---
+
+class: full
+
+<iframe src="https://2017.nodeconf.com.ar" frameborder="0" scrolling="0" width="100%" height="800px"></iframe>
