@@ -68,8 +68,8 @@ background-image: url('./img/messi.jpg')
 ## Stats
 
 - *1.2M* usuarios únicos por mes
-- Messi *200k* en 2 día
-- *5M* Apps bajadas
+- Messi *200k* en 2 dias
+- *10M* Apps bajadas
 - *24.561.292 votos* recibidos
 - Evento típico *200k RPM*
 
